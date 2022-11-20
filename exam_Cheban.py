@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import lxml
 
+
 connection = sqlite3.connect("DB.sl3", 5)
 cur = connection.cursor()
 
@@ -29,11 +30,11 @@ class Parsing():
             for i in range(len(product_list)):
                 title = product_list[i].find('a', class_='goods-tile__heading ng-star-inserted').text
                 try:
-                    discount = product_list[i].find('span', class_='goods-tile__price-value').text
-                    # with open('my_product.txt', 'a', encoding='UTF-8') as file:
-                    #     file.write(f"{product}    Old price {old_price} New price {new_price}'\n'")
+                    discount = product_list[i].find('p', class_='ng-star-inserted').text
+                    with open('my_product.txt', 'a', encoding='UTF-8') as file:
+                        file.write(f"{title}    Price: {discount}'\n'")
                     cur.execute(f"INSERT INTO discount_table (title, price) VALUES ('{title}', '{discount}') ;")
-                    cur.execute("SELECT * FROM discount_table")
+                    cur.execute(f"SELECT * FROM discount_table;")
 
                 except AttributeError:
                     pass
@@ -41,6 +42,7 @@ class Parsing():
 rozetka = Parsing()
 rozetka.pars()
 # cur.execute("DROP TABLE discount_table;")
+
 
 connection.commit()
 res = cur.fetchall()
