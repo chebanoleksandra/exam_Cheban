@@ -2,7 +2,6 @@ import sqlite3
 import requests
 from bs4 import BeautifulSoup
 import lxml
-import fake_useragent
 
 connection = sqlite3.connect("DB.sl3", 5)
 cur = connection.cursor()
@@ -38,7 +37,6 @@ class Parsing():
 
                 except AttributeError:
                     pass
-                    # print("There's no discount!")
 
 rozetka = Parsing()
 rozetka.pars()
